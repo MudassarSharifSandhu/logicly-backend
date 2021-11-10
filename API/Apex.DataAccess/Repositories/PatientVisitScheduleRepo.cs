@@ -298,7 +298,7 @@ namespace Apex.DataAccess.Repositories
 
         public Patient GetPatientLatLon(int patientId)
         {
-            var cmd = Sql.Builder.Select($@"*").From("patientprofiles");
+            var cmd = Sql.Builder.Select($@"*").From("PatientProfiles");
             cmd.Where("Id=@0", patientId);
             using (var db = Utility.Database)
             {

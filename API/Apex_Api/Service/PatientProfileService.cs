@@ -717,11 +717,17 @@ namespace Apex_Api.Service
 
             var GetAllFrequency = new List<PatientSchedule>();
 
+            DateTime calYear = new DateTime();
             DateTime weekEndRange = new DateTime();
             if (!patientSchedule.IsFrequencyNew)
             {
                 weekEndRange = new PatientDateRepo().GetLastPatientDate(patientSchedule.PatientId,
                 clinicianId, patientSchedule.RecertId).LastOrDefault().PatientDates;
+                calYear = weekEndRange;
+            }
+            else
+            {
+                calYear = evaluation;
             }
                 
            foreach (var freq in patientSchedule.GeneratedVisitCode)
@@ -735,7 +741,7 @@ namespace Apex_Api.Service
                     switch (unit.ToUpper())
                     {
                         case "W":
-                            rangeWeek = Utility.WeekDateRange(evaluation.Year, (weekNo - 1 + Convert.ToInt32(number.Last())));
+                            rangeWeek = Utility.WeekDateRange(calYear.Year, (weekNo - 1 + Convert.ToInt32(number.Last())));
                             allowFreqSave = Utility.IsBetween(eoc, rangeWeek.WeekStart, rangeWeek.WeekEnd);
                             if (!allowFreqSave)
                                 throw new HttpException(402,
